@@ -1,0 +1,2 @@
+comment savoir si l'admin est bien l'admin ?
+est ce que c'est assez sécurisé que de mettre dans la db admin -> boolean(true, false) ?
