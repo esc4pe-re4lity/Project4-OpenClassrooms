@@ -1,5 +1,5 @@
 <?php
-require('DBFactory.php');
+require_once('DBFactory.php');
 class PostManager
 {
     public static function addPost(Post $post){

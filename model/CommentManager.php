@@ -1,5 +1,5 @@
 <?php
-require('DBFactory.php');
+require_once('DBFactory.php');
 class CommentManager
 {
     public static function addComment(Comment $comment){
@@ -7,14 +7,14 @@ class CommentManager
         $req=$db->prepare('INSERT INTO comments(idPost, author, content, creationDate) VALUES(:idPost, :author, :content, NOW())');
         $q->execute(array('idPost'=>$comment->getIdPost(),'author'=>$comment->getAuthor(),'content'=>$comment->getContent()));
     }
-    public static function getComment(){           // PAS NECESSAIRE - A AVOIR
+    public static function getComment(){           // PAS NECESSAIRE - A VOIR
         $db = DBFactory::loadDB();
         $q=$db->query('SELECT id, idPost, author, content, creationDate FROM comments WHERE id='.$_GET['id']);
         return $q;
     }
     public static function getComments(){
         $db = DBFactory::loadDB();
-        $q=$db->query('SELECT id, idPost, author, content, creationDate FROM comments WHERE id='.$_GET['id'].'ORDER BY id DESC');
+        $q=$db->query('SELECT id, idPost, author, content, creationDate FROM comments WHERE idPost='.$_GET['id'].'ORDER BY id DESC');
         return $q;
     }
     public static function getSignaledComments(){

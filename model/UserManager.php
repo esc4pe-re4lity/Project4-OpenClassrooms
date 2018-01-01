@@ -1,5 +1,5 @@
 <?php
-require('DBFactory.php');
+require_once('DBFactory.php');
 class UserManager
 {
    public static function addUser (User $user){
