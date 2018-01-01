@@ -6,4 +6,14 @@ class Controler
         $posts = PostManager::getAllPosts();
         return $posts;
     }
+    public static function getPost(){
+        require('../model/postManager.php');
+        $post = PostManager::getPost();
+        return $post;
+    }
+    public static function getComments(){
+        require('../model/commentManager.php');
+        $comments = CommentManager::getComments();
+        return $comments;
+    }
 }
