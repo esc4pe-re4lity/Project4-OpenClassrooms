@@ -1,5 +1,11 @@
 comment savoir si l'admin est bien l'admin ?
+-> avec $_SESSION[] c'est bon
 est ce que c'est assez sécurisé que de mettre dans la db admin -> boolean(true, false) ?
 qu'est ce que je passe comme données dans la méthode updatePost() ? $_POST[] ou Post $post ?
+->if(isset($_POST['title'])){
+    if (!empty(trim($_POST['pseudo']))) {
+        extract($_POST);
 est ce que je dois créer une méthode statique pour crypter le password ou je peux juste le crypter dans le setter ?
 est ce qu'à la place de admin dans la db users, ce ne serait pas mieux de mettre role et de créer une table role avec admin, users, modo...
+quand est ce qu'il faut mettre $req=$db->prepare et $q=$db->query ?
+quand est ce qu'il faut execute? quand c'est une request ou une query ?
