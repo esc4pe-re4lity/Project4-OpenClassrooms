@@ -19,9 +19,9 @@ class CommentManager
     }
     public static function getSignaledComments(){
         $db = DBFactory::loadDB();
-        $req=$db->prepare('SELECT * FROM comments WHERE signaled=true');
+        $q=$db->query('SELECT * FROM comments WHERE signaled=true');
         // faire une jonction entre la table signaledComments et la table comments
-        return $req;
+        return $q;
     }
     public static function getAllComments(){
         $db = DBFactory::loadDB();

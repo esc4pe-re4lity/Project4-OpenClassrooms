@@ -2,17 +2,17 @@
 class Controler
 {
     public static function getAllPosts(){
-        require('../model/PostManager.php');
+        require_once('../model/PostManager.php');
         $posts = PostManager::getAllPosts();
         return $posts;
     }
     public static function getPost(){
-        require('../model/postManager.php');
+        require_once('../model/PostManager.php');
         $post = PostManager::getPost();
         return $post;
     }
     public static function getComments(){
-        require('../model/commentManager.php');
+        require_once('../model/CommentManager.php');
         $comments = CommentManager::getComments();
         return $comments;
     }
