@@ -9,14 +9,13 @@ class PostManager
     }
     public static function getPost(){
         $db = DBFactory::loadDB();
-        $q=$db->query('SELECT id, title, content, creationDate, updated, updatedDate FROM posts WHERE id='.$_GET['id']);
+        $q=$db->query('SELECT * FROM posts WHERE id='.$_GET['id']);
         return $q;
     }
     public static function getAllPosts(){
         $db = DBFactory::loadDB();
-        $req=$db->prepare('SELECT id, title, content, creationDate, updated, updatedDate FROM posts ORDER BY id DESC LIMIT 0, 5');
-        $req->execute();
-        return $req;
+        $q=$db->query('SELECT * FROM posts ORDER BY id DESC LIMIT 0, 5');
+        return $q;
     }
     public static function updatePost(){
         $db = DBFactory::loadDB();
