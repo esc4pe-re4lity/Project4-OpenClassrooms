@@ -14,7 +14,7 @@ class CommentManager
     }
     public static function getComments(){
         $db = DBFactory::loadDB();
-        $q=$db->query('SELECT * FROM comments WHERE id_post='.$_GET['id'].' ORDER BY id DESC');
+        $q=$db->query('SELECT * FROM comments WHERE idPost='.$_GET['id'].' ORDER BY id DESC');
         return $q;
     }
     public static function getSignaledComments(){
