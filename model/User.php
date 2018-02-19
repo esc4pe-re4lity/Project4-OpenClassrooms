@@ -5,7 +5,7 @@ class User
                 $password,
                 $email,
                 $creationDate,
-                $groupe;
+                $admin;
     
     public function getPseudo(){
         return $this->pseudo;
@@ -19,32 +19,32 @@ class User
     public function getCreationDate(){
         return $this->creationDate;
     }
-    public function getGroupe(){
-        return $this->groupe;
+    public function getAdmin(){
+        return $this->admin;
     }
-    public static function setPseudo($pseudo){
-        if(is_int($pseudo)){
-            $this->pseudo = $pseudo;
+    public function setPseudo($pseudo){
+        if(is_string($pseudo)){
+            $this->pseudo = strtolower($pseudo);
         }
     }
-    public static function setPassword($password){
+    public function setPassword($password){
         // A FAIRE - ajouter un salt aléatoirement et le stocker dans le db
         $salt=hash('sha256',$this->pseudo);
-        $this->password=crypt($this->password,$salt);
+        $this->password=crypt($password,$salt);
     }
-    public static function setEmail($email){
+    public function setEmail($email){
         if(is_string($email)){
             $this->email = $email;
         }
     }
-    public static function setCreationDate($creationDate){
+    public function setCreationDate($creationDate){
         // A FAIRE - mettre la date au bon format
         $this->creationDate = $creationDate;
     }
-    public static function setGroupe($groupe){
-        // A VOIR - COMMENT JE FAIS POUR LES DIFFERENTS ROLES
-        if(is_bool($groupe)){
-            $this->groupe = $groupe;
+    public function setAdmin($admin){
+        $int = (int)$admin;
+        if(is_int($int)){
+            $this->admin = $int;
         }
     }
 }

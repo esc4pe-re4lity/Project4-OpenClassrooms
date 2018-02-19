@@ -5,7 +5,7 @@ class Comment
                 $author,
                 $content,
                 $creationDate,
-                $signaled;
+                $reported;
     
     public function getIdPost(){
         return $this->idPost;
@@ -19,31 +19,31 @@ class Comment
     public function getCreationDate(){
         return $this->creationDate;
     }
-    public function getSignaled(){
-        return $this->signaled;
+    public function getReported(){
+        return $this->reported;
     }
-    public static function setIdPost($idPost){
+    public function setIdPost($idPost){
         if(is_int($idPost)){
             $this->idPost = $idPost;
         }
     }
-    public static function setAuthor($author){
+    public function setAuthor($author){
         if(is_string($author)){
             $this->author = $author;
         }
     }
-    public static function setContent($content){
+    public function setContent($content){
         if(is_string($content)){
             $this->content = $content;
         }
     }
-    public static function setCreationDate($creationDate){
+    public function setCreationDate($creationDate){
         // mettre la date au bon format
         $this->creationDate = $creationDate;
     }
-    public static function setSignaled($signaled){
-        if(is_bool($signaled)){
-            $this->signaled = $signaled;
+    public function setReported($reported){
+        if(is_bool($reported)){
+            $this->reported = $reported;
         }
     }
 }

@@ -2,40 +2,44 @@
 require_once('DBFactory.php');
 class UserManager
 {
-   public static function addUser (User $user){
+   public function addUser (User $user){
         $db = DBFactory::loadDB();
-        $req=$db->prepare('INSERT INTO users(pseudo, password, email, creationDate) VALUES(:pseudo, :password, :email, NOW())');
-        $req->execute(array('pseudo'=>$user->getPseudo(),'password'->getPassword(),'email'=>$user->getEmail()));
+        $req=$db->prepare('INSERT INTO users(pseudo, password, email, admin, creationDate) VALUES(:pseudo, :password, :email, false, NOW())');
+        $req->execute(array('pseudo'=>$user->getPseudo(),'password'=>$user->getPassword(),'email'=>$user->getEmail()));
     }
-    public static function login(User $user){
-        // on crée une instance de User pour crypter le password et pour vérifier les infos rentrées par l'user
+    public function login(User $user){
         $db = DBFactory::loadDB();
-        $req=$db->prepare('SELECT id, pseudo, password, email, groupe FROM users WHERE pseudo=:pseudo AND password=:password');
+        $req=$db->prepare('SELECT * FROM users WHERE pseudo=:pseudo AND password=:password');
         $req->execute(array('pseudo'=>$user->getPseudo(),'password'=>$user->getPassword()));
         return $req;
     }
-    public static function getUser($data){
+    public function pseudoExists(User $user){
+        $db = DBFactory::loadDB();
+        $req=$db->prepare('SELECT pseudo FROM users WHERE pseudo=:pseudo');
+        $req->execute(array('pseudo'=>$user->getPseudo()));
+        return $req;
+    }
+    public function getUser($data){
         $db = DBFactory::loadDB();
         if(is_int($data)){
-            $q=$db->query('SELECT id, pseudo, email, creationDate, groupe FROM users WHERE id='.$data);
+            $q=$db->query('SELECT * FROM users WHERE id='.$data);
         }else{
-            $q=$db->query('SELECT id, pseudo, email, creationDate, groupe FROM users WHERE pseudo=:pseudo');
-            $q->execute([':pseudo'=>$data]);
+            $req=$db->prepare('SELECT * FROM users WHERE pseudo=:pseudo');
+            $req->execute([':pseudo'=>$data]);
         }
         return $q;
     }
-    public static function getUsers(){
+    public function getUsers(){
         $db = DBFactory::loadDB();
-        $q=$db->query('SELECT id, pseudo, email, creationDate, groupe FROM users ORDER BY pseudo');
-        $q->execute();
+        $q=$db->query('SELECT * FROM users ORDER BY pseudo');
         return $q;
     }
-    public static function updateUser(User $user){
+    public function updateUser(User $user){
         $db = DBFactory::loadDB();
-        $req=$db->prepare('UPDATE users SET pseudo=:pseudo, password=:password, email=:email');
-        $req->execute(array('pseudo'=>$user->getPseudo(),'password'=>$user->getPassword(),'email'=>$user->getEmail()));
+        $req=$db->prepare('UPDATE users SET pseudo=:pseudo, email=:email');
+        $req->execute(array('pseudo'=>$user->getPseudo(),'email'=>$user->getEmail()));
     }
-    public static function deleteUser(){
+    public function deleteUser(){
         $db = DBFactory::loadDB();
         $q=$db->query('DELETE FROM users WHERE id='.$_GET['id']);
     }

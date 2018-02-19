@@ -2,28 +2,44 @@
 require_once('DBFactory.php');
 class PostManager
 {
-    public static function addPost(Post $post){
+    public function countPosts(){
         $db = DBFactory::loadDB();
-        $req=$db->prepare('INSERT INTO posts(title, content, creationDate) VALUES(:title, :content, NOW())');
-        $q->execute(array('title'=>$post->getTitle(),'content'=>$post->getContent()));
+        $q=$db->query('SELECT id FROM posts');
+        return $q->rowCount();
     }
-    public static function getPost(){
+    public function addPost(Post $post){
+        $db = DBFactory::loadDB();
+        $req=$db->prepare('INSERT INTO posts(title, content, excerpt, creationDate) VALUES(:title, :content, :excerpt, NOW())');
+        $req->execute(array('title'=>$post->getTitle(),'content'=>$post->getContent(), 'excerpt'=>$post->getExcerpt()));
+        return $db->lastInsertId();
+    }
+    public function idPostExists(){
+        $db = DBFactory::loadDB();
+        $q=$db->query('SELECT id FROM posts WHERE id='.$_GET['id']);
+        return $q;
+    }
+    public function getPost(){
         $db = DBFactory::loadDB();
         $q=$db->query('SELECT * FROM posts WHERE id='.$_GET['id']);
         return $q;
     }
-    public static function getAllPosts(){
+    public function getAllPosts(Paging $paging){
         $db = DBFactory::loadDB();
-        $q=$db->query('SELECT * FROM posts ORDER BY id DESC LIMIT 0, 5');
-        return $q;
+        $req=$db->prepare('SELECT * FROM posts ORDER BY id DESC LIMIT :offset, :limit');
+        $req->bindValue(':offset', $paging->getOffset(), PDO::PARAM_INT);
+        $req->bindValue(':limit', $paging->getLimit(), PDO::PARAM_INT);
+        $req->execute();
+        return $req;
     }
-    public static function updatePost(){
+    public function updatePost(Post $post){
         $db = DBFactory::loadDB();
-        $req=$db->prepare('UPDATE posts SET title=:title, content=:content, updated=true, updated_date=NOW() WHERE id='.$_GET['id']);
-        $req->execute(array('title'=>$_POST['title'],'content'=>$_POST['content']));
+        $req=$db->prepare('UPDATE posts SET title=:title, content=:content, excerpt=:excerpt, updated=true, updatedDate=NOW() WHERE id='.$_GET['id']);
+        $req->execute(array('title'=>$post->getTitle(),'content'=>$post->getContent(),'excerpt'=>$post->getExcerpt()));
     }
-    public static function deletePost(){
+    public function deletePost(){
         $db = DBFactory::loadDB();
         $q=$db->query('DELETE FROM posts WHERE id='.$_GET['id']);
+        $q->closeCursor();
+        $q=$db->query('DELETE FROM comments WHERE idPost='.$_GET['id']);
     }
 }
