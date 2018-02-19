@@ -1,2 +1,3 @@
 <?php
-header('Location: controler/index.php');
+require('controler/Rooter.php');
+$rooter = new Rooter();
