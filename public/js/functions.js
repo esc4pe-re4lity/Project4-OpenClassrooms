@@ -52,7 +52,7 @@ var verifyPseudo = function(){
     var formElt = document.querySelector("form"),
         pseudoElt = formElt.pseudo,
         infoElt = document.getElementById("info"),
-        regexPseudo = /^[a-z0-9_-]+$/;
+        regexPseudo = /^[a-zA-Z0-9_-]+$/;
     infoElt.textContent = "";
     if(!regexPseudo.test(pseudoElt.value)){
         infoElt.textContent = "Votre pseudo ne peut contenir que des majuscules, minuscule, des chiffres et tirets";
@@ -129,12 +129,11 @@ var verifyConfPassword = function(){
 };
 
 function verifyForm(){
-    var formElt = document.querySelector("form"),
-        pseudoOK = verifyPseudo(),
+    var pseudoOK = verifyPseudo(),
         emailOK = verifyEmail(),
         passwordOK = verifyPassword(),
         confPasswordOK = verifyConfPassword();
-    if(passwordOK && confPasswordOK && emailOK){
+    if(pseudoOK && passwordOK && confPasswordOK && emailOK){
         return true;
     }else{
         return false;
@@ -142,11 +141,6 @@ function verifyForm(){
 }
 
 function formNOK(){
-    var formElt = document.querySelector("form"),
-        pseudoOK = verifyPseudo(),
-        emailOK = verifyEmail(),
-        passwordOK = verifyPassword(),
-        confPasswordOK = verifyConfPassword(),
-        infoElt = document.getElementById("info");
+    var infoElt = document.getElementById("info");
     infoElt.textContent = "Une ou plusieurs données saisies sont incorrectes";
 }
