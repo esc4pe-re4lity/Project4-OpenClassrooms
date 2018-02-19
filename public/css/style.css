@@ -201,10 +201,12 @@ form #info
 form input[type="submit"]
 {
     border: none;
-    font-size: 1.2em;
+    width: 60%;
+    font-size: 1em;
     cursor: pointer;
     padding: 10px;
-    color: rgb(245, 245, 245);
+    color: #f5f5f5;
+    border: 2px solid #72777c;
     border-radius: 5px;
 }
 .add-comment
@@ -219,11 +221,6 @@ form input[type="submit"]
     resize: vertical;
     width: 300px;
     max-width: 300px;
-}
-.add-comment input[type="submit"]
-{
-    font-size: 1.1em;
-    padding: 5px;
 }
 /* ----- FIN - FORM ----- */
 
@@ -323,6 +320,7 @@ form input[type="submit"]
     display: block;
     padding: 10px 20px;
     border-radius: 2px;
+    border: 2px solid #72777c;
 }
 .font-awesome-icons i
 {
@@ -338,15 +336,22 @@ form input[type="submit"]
 /* --- BUTTON --- */
 .button
 {
-    background-color: #D2D2D2;
-    -webkit-box-shadow: 0px 1px 3px #666666;
-    -moz-box-shadow: 0px 1px 3px #666666;
-    box-shadow: 0px 1px 3px #666666;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    background-color: #72777c;
     font-weight: 400;
+    transition: background-color 0.2s ease-in-out;
 }
 .button:hover, .button:focus
 {
-    background-color: #72777c;
+    background-color: initial;
+    color: #72777c;
+    transition: background-color 0.2s ease-in-out;
+}
+.button:hover i, .button:focus i
+{
+    color: #72777c;
 }
 
 /* ----- PAGING ----- */
@@ -368,16 +373,18 @@ form input[type="submit"]
 }
 .paging li:hover a
 {
-    background-color: #9BB7C2;
-    color : rgb(245, 245, 245);
+    background-color: #72777c;
+    color : #f5f5f5;
+    border: none;
+    font-weight: bold;
 }
 .paging a
 {
-    background-color: rgb(245, 245, 245);
+    background-color: #f5f5f5;
+    color: #72777c;
     border-radius: 2px;
     padding: 3px 9px;
     margin: auto;
-    font-weight: bold;
 }
 /* ----- FIN - PAGING ----- */
 
