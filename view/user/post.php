@@ -46,20 +46,31 @@ while ($comment = $comments->fetch(PDO::FETCH_ASSOC))
 {
 ?>
 <div class="comments">
-    <h3><?= ucfirst(htmlspecialchars(utf8_encode($comment['author']))) ?></h3>
-    <p>
-        <?= nl2br(htmlspecialchars(utf8_encode($comment['content']))) ?>
-    </p>
-    <p>
-        <time class="date">
-            <?php $formatter = new IntlDateFormatter('fr_FR',IntlDateFormatter::FULL,
-                                    IntlDateFormatter::SHORT,
-                                    'Europe/Paris',
-                                    IntlDateFormatter::GREGORIAN);
-            $formattedDate =new DateTime($comment['creationDate']);
-            echo $formatter->format($formattedDate); ?>
-        </time>
-    </p>
+    <div class="comment-title">
+        <h3><?= ucfirst(htmlspecialchars(utf8_encode($comment['author']))) ?></h3>
+        <div class="admin-toolbar flag">
+            <div class="font-awesome-icons button">
+                <a href="index.php?action=reportComment&amp;idPost=<?=$comment['idPost']?>&amp;id=<?=$comment['id']?>">
+                    <i class="fa fa-flag" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="comment-content">
+        <p>
+            <?= nl2br(htmlspecialchars(utf8_encode($comment['content']))) ?>
+        </p>
+        <p>
+            <time class="date">
+                <?php $formatter = new IntlDateFormatter('fr_FR',IntlDateFormatter::FULL,
+                                        IntlDateFormatter::SHORT,
+                                        'Europe/Paris',
+                                        IntlDateFormatter::GREGORIAN);
+                $formattedDate =new DateTime($comment['creationDate']);
+                echo $formatter->format($formattedDate); ?>
+            </time>
+        </p>
+    </div>
 </div>
 <?php
 }
@@ -69,14 +80,13 @@ while ($comment = $comments->fetch(PDO::FETCH_ASSOC))
 
 <?php  ob_start(); ?>
 <script>
-    var submitButton = document.querySelector("form[type=\"submit\"]");
-    var submittedForm = submitButton.addEventListener("click", function(){
-        return true;
-    });
-    console.log(submittedForm);
+    var i = 0;
+    $('i').filter('[class="fa fa-user-circle"]').click(displayNav);
 </script>
-<?php if(isset($displayBanner)){
-    echo htmlspecialchars($displayBanner);
+<?php
+if(isset($action)){ ?>
+<script>displayBanner(<?= $action ?>);</script>
+<?php
 } ?>
 <?php $script = ob_get_clean(); ?>
 

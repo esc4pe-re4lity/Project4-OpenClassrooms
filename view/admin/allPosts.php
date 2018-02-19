@@ -9,11 +9,24 @@
 while ($post = $posts->fetch(PDO::FETCH_ASSOC))
 {
 ?>
+<div class="admin-posts">
     <div class="posts">
         <div class="post-title">
             <a href="index.php?action=post&amp;id=<?=$post['id']?>">
                 <h2><?= htmlspecialchars(utf8_encode($post['title'])) ?></h2>
             </a>
+            <div class="admin-toolbar">
+                <div class="font-awesome-icons button">
+                    <a href="index.php?action=updatePost&amp;id=<?=$post['id']?>" title="Modifier">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="font-awesome-icons button">
+                    <a href="index.php?action=deletePost&amp;id=<?=$post['id']?>" title="Supprimer">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
         </div>
         <div class="post-content">
             <p>
@@ -37,7 +50,8 @@ while ($post = $posts->fetch(PDO::FETCH_ASSOC))
             </p>
         </div>
     </div>
-<?php
+</div>
+ <?php
 }
 ?>
     <div class="paging">
@@ -55,7 +69,11 @@ for($i=1; $i<=$paging->getNumberOfPages(); $i++){
 
 
 <?php  ob_start(); ?>
-<script src="../public/js/functions.js"></script>
+<script>
+    var i = 0;
+    $('i').filter('[class="fa fa-user-circle"]').click(displayNav);
+    $('i').filter('[class="fa fa-trash"]').click(confirmDelete);
+</script>
 <?php
 if(isset($action)){ ?>
 <script>displayBanner(<?= $action ?>);</script>

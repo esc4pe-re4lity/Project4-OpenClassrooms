@@ -1,11 +1,70 @@
 comment savoir si l'admin est bien l'admin ?
 -> avec $_SESSION[] c'est bon
-est ce que c'est assez s�curis� que de mettre dans la db admin -> boolean(true, false) ?
-qu'est ce que je passe comme donn�es dans la m�thode updatePost() ? $_POST[] ou Post $post ?
+est ce que c'est assez s�curis� que de mettre dans la db admin -> boolean(true, false) ?
+qu'est ce que je passe comme donn�es dans la m�thode updatePost() ? $_POST[] ou Post $post ?
 ->if(isset($_POST['title'])){
     if (!empty(trim($_POST['pseudo']))) {
         extract($_POST);
-est ce que je dois cr�er une m�thode statique pour crypter le password ou je peux juste le crypter dans le setter ?
-est ce qu'� la place de admin dans la db users, ce ne serait pas mieux de mettre role et de cr�er une table role avec admin, users, modo...
-quand est ce qu'il faut mettre $req=$db->prepare et $q=$db->query ?
-quand est ce qu'il faut execute? quand c'est une request ou une query ?
+est ce que je dois cr�er une m�thode statique pour crypter le password ou je peux juste le crypter dans le setter ?
+est ce qu'� la place de admin dans la db users, ce ne serait pas mieux de mettre role et de cr�er une table role avec admin, users, modo...
+est ce que il faut que je mette htmlspecialchars sur les dates aussi ?
+comment je change la hauteur et la largeur de l'éditeur wysiwyg TinyMCE ??? resolved
+comment je récupère la valeur entrée par l'utilisateur dans l'éditeur TinyMce ? resolved
+comment stocker la valeur retournée d'un événement ???
+comment attribuer un événement à plusieurs élément du DOM (des div appartenants à une même classe) ?
+
+
+
+Astuce : le mot de passe devrait contenir au moins 12 caract�res. Pour le rendre plus s�r, utilisez des lettres en majuscule et minuscule, des nombres, et des symboles tels que ! " ? $ % ^ & ).
+
+
+Singleton = un objet unique, une seule instance issue d'une classe dans toute l'application
+Le singleton est une sorte d'objet qui va permettre d'instancier qu'une seule fois chaque objet, il faut aller le chercher 
+Un factory peut produire un singleton
+Les design pattern : factory et observateur
+fullstack : back-end et frontend
+
+UML
+Model View View Model
+Script = factory
+Faire un objet reportedComemnts
+Faire une classe rooter
+
+class rooter(){
+    private static $instance;
+    
+    private function __construct(){
+        $this->initUrl();
+    }
+    protected function initUrl(){
+        if(isset($_GET['action'])){
+        
+        }
+    }
+    public static function getInstance(){
+        if(!isset(self::$instance)){
+            self :: $instance = new self;
+        }
+        return self::$instance
+    }
+}
+
+$rooter = rooter::getInstance();
+$rooter = newRooter();
+
+
+
+
+faire un return true ou false et ajouter une fonction verifyForm en faisant appelle aux fonctions verifyPassword et verifyEmail et en fonction du r�sultat, on submit ou pas le form
+jquery hide pour les banni�res ou fadein...
+v�rification sql php si quelque a bien �t� ajout� dans la DB : retourner true ou false avec des if(){} ou avec un try and catch
+
+Créer une classe rooter dans le controler et l'instancier dans le fichier index.php et il faudra enlever le ../ de tous les fichiers
+faire une méthode __construct() et on appellera une méthode privée qui 
+
+Faire soit un hover pour afficher le menu soit utiliser une fonction avec l'incrémentation pour faire soit apparaître soit disparaître le menu i = i+1 et i = i-1
+if ($('div').filter('[class=radio]').prop('checked'))
+                                    .is()
+                                    .click()
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
