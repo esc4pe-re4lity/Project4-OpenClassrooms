@@ -1,58 +1,429 @@
 *
 {
-	font-family: calibri;
+	font-family: 'Source Sans Pro', calibri, sans-serif;
+        font-weight: 200;
+        color: #72777c;
 }
-h1
+body
 {
-	text-align: center;
+    background:  url('../images/alaska-aurora-borealis-alone.jpg') rgb(248, 250, 247) fixed no-repeat center;
+    background-size: cover;
 }
-form {
-	text-align: center;	
-}
-.posts
+#page-content
 {
-	padding: 2%;
-	text-align: justify;
-	margin: auto;
-	margin-top: 2%;
-	width: 50%;
-	background-color: #f5f5f5;
-}
-.posts h2
-{
-	margin-top: 0;
-	padding-bottom: 1%;
-	border-bottom: 2px solid #D2D2D2;
-}
-.comments {
-	padding: 1%;
-	text-align: justify;
-	margin: 10px auto;
-	width: 50%;
-	background-color: #f5f5f5;
-}
-.comments h3 {
-	margin-top: 0;
-	padding-bottom: 1%;
-	border-bottom: 2px solid #D2D2D2;
-}
-.date {
-	font-size: 0.9em;
-	font-style: italic;
-}
-.wysiwyg-editor{
+    width: 80%;
+    margin: auto;
     padding: 2%;
-	margin: auto;
-	margin-top: 2%;
-    width: 50%;
-    overflow: auto;
+    margin-top: 150px;
+    z-index: 1;
 }
-#wysiwyg-title{
-    height: 50px;
+a
+{
+    text-decoration: none;
+    color: rgb(155, 183, 194);
 }
-#wysiwyg-content{
-    height: 300px;
+html>body header
+{
+    position: fixed;
 }
-#wysiwyg-buttons{
+
+
+/* ----- HEADER ----- */
+header
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    text-align: center;
+    background-color: rgb(248, 250, 247);
+    z-index: 2;
+}
+#header-box
+{
+    width: 80%;
+    margin: auto;
+    position: relative;
+}
+#header-box h1
+{
+    margin: 10px 0;
+    font-weight: 300;
+}
+.hover.bold:hover
+{
+    font-weight: 400;
+}
+#user-menu
+{
+    width: 20%;
+    position: absolute;
+    right: 0;
+}
+#icon-menu
+{
     
 }
+#icon-user
+{
+    padding: 5px;
+    text-align: right;
+}
+#icon-user i
+{
+    font-size: 2em;
+    cursor: pointer;
+}
+#nav-menu
+{
+    display: none;
+    background-color: rgb(248, 250, 247);
+    
+}
+#nav-menu ul
+{
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+#nav-menu li:first-child
+{
+    padding: 10px;
+    padding-left: 32px;
+}
+#nav-menu li:first-child:hover
+{
+    background-color: initial;
+}
+#nav-menu li
+{
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+}
+#nav-menu a
+{
+    padding: 10px;
+    display: block;
+}
+#nav-menu li:hover
+{
+    background-color: #72777c;
+}
+#nav-menu li:hover i
+{
+    color: rgb(155, 183, 194);
+}
+#nav-menu li:hover a
+{
+    color: rgb(248, 250, 247);
+    font-weight: 400;
+}
+#nav-menu i
+{
+    width: 20px;
+}
+.banner
+{
+    padding: 1%;
+    text-align: center;
+    margin: auto;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    width: 75%;
+    background-color: #f5f5f5;
+    display: none;
+}
+/* ----- FIN - HEADER ----- */
+
+
+/* ----- FORM ----- */
+form
+{
+    background-color: rgba(255,255,255,0.9);
+    padding: 20px;
+    text-align: center;
+    width: 400px;
+    margin: auto;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 1px 3px #666666;
+    -moz-box-shadow: 0px 1px 3px #666666;
+    box-shadow: 0px 1px 3px #666666;
+}
+form h2
+{
+    margin-top: 0;
+}
+form textarea
+{
+    padding: 10px;
+}
+form label
+{
+    cursor: pointer;
+}
+form input
+{
+    border-radius: 2px;
+    padding: 2px;
+    border: 1px solid #CCC;
+}
+form input:focus
+{
+    border-color: rgba(82, 168, 236, 0.75);
+    box-shadow: 0 0 8px rgba(82, 168, 236, 0.5);
+}
+form .correct
+{
+    border: 2px solid rgba(68, 191, 68, 0.75);
+}
+form .incorrect
+{
+    border: 2px solid rgba(191, 68, 68, 0.75);
+}
+form .correct:focus
+{
+    border-color: rgba(68, 191, 68, 0.75);
+    box-shadow: 0 0 8px rgba(82, 168, 236, 0.5);
+}
+form .incorrect:focus
+{
+    border-color: rgba(191, 68, 68, 0.75);
+    box-shadow: 0 0 8px rgba(82, 168, 236, 0.5);
+}
+form #info
+{
+    font-style: italic;
+}
+form input[type="submit"]
+{
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 10px;
+    color: rgb(245, 245, 245);
+    border-radius: 5px;
+}
+.add-comment
+{
+    box-sizing: border-box;
+    padding: 5px;
+    margin-bottom: 40px;
+    width: 40%;
+}
+.add-comment textarea
+{
+    resize: vertical;
+    width: 300px;
+    max-width: 300px;
+}
+.add-comment input[type="submit"]
+{
+    font-size: 1.1em;
+    padding: 5px;
+}
+/* ----- FIN - FORM ----- */
+
+
+/* ----- POSTS ----- */
+.posts
+{
+    text-align: justify;
+    margin: auto;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    width: 55%;
+    min-height: 200px;
+    background-color: rgba(255,255,255,0.9);
+    box-sizing: border-box;
+}
+.post-title
+{
+    border-bottom: 2px solid #D2D2D2;
+    position: relative;
+}
+.post-title h2
+{
+    margin: 0;
+    padding: 20px 25px;
+}
+.post-title a
+{
+    display: block;
+}
+.post-title a:hover h2
+{
+    font-weight: 400;
+}
+.post-content
+{
+    padding: 1% 5%;
+}
+.post-content a:hover
+{
+    font-weight: 400;
+}
+/* ----- FIN - POSTS ----- */
+
+
+/* ----- COMMENTS ----- */
+.comments
+{
+    padding: 1%;
+    text-align: justify;
+    margin: 10px auto;
+    width: 40%;
+    background-color: #f5f5f5;
+    box-sizing: border-box;
+}
+.comment-title
+{
+    position: relative;
+}
+.comments h3
+{
+    margin-top: 0;
+    padding: 10px 0;
+    border-bottom: 2px solid #D2D2D2;
+}
+.date
+{
+    font-size: 0.9em;
+    font-style: italic;
+}
+/* ----- FIN - COMMENTS ----- */
+
+
+/* ----- TOOLBAR ----- */
+.admin-posts
+{
+    position: relative;
+    margin-bottom: 40px;
+}
+.admin-toolbar
+{
+    display: flex;
+    position: absolute;
+    top: 10px;
+    right: 0;
+}
+.admin-toolbar.trash, .admin-toolbar.flag
+{
+    top: 0;
+}
+.font-awesome-icons
+{
+    margin-right: 10px;
+}
+.font-awesome-icons a
+{
+    display: block;
+    padding: 10px 20px;
+    border-radius: 2px;
+}
+.font-awesome-icons i
+{
+    display: block;
+    font-size: 1em;
+    color: rgb(245, 245, 245);
+    margin: auto;
+    text-align: center;
+}
+/* ----- FIN - TOOLBAR ----- */
+
+
+/* --- BUTTON --- */
+.button
+{
+    background-color: #D2D2D2;
+    -webkit-box-shadow: 0px 1px 3px #666666;
+    -moz-box-shadow: 0px 1px 3px #666666;
+    box-shadow: 0px 1px 3px #666666;
+    font-weight: 400;
+}
+.button:hover, .button:focus
+{
+    background-color: #72777c;
+}
+
+/* ----- PAGING ----- */
+.paging
+{
+    margin-top: 50px;
+}
+.paging ul
+{
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 0;
+}
+.paging li
+{
+    margin-right: 5px;
+}
+.paging li:hover a
+{
+    background-color: #9BB7C2;
+    color : rgb(245, 245, 245);
+}
+.paging a
+{
+    background-color: rgb(245, 245, 245);
+    border-radius: 2px;
+    padding: 3px 9px;
+    margin: auto;
+    font-weight: bold;
+}
+/* ----- FIN - PAGING ----- */
+
+
+/* ----- WYSIWYG EDITOR ----- */
+#text-editor
+{
+    width: 70%;
+}
+.wysiwyg-editor
+{
+    padding: 2%;
+    margin: auto;
+    margin-top: 2%;
+    width: 80%;
+    height: 400px;
+    overflow: auto;
+}
+#title
+{
+    font-size: 1.2em;
+    padding: 5px;
+    height: 30px;
+    width: 60%;
+}
+#tinymce>p{
+    background-color: red;
+}
+/* ----- FIN - WYSIWYG EDITOR ----- */
+
+
+/* ----- ERROR ----- */
+#error
+{
+    background-color: rgba(255,255,255,0.9);
+    padding: 20px;
+    margin: auto;
+    text-align: center;
+    width: 50%;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 1px 3px #666666;
+    -moz-box-shadow: 0px 1px 3px #666666;
+    box-shadow: 0px 1px 3px #666666;
+}
+#error-image
+{
+    width: 50%;
+}
+/* ----- FIN - ERROR ----- */
