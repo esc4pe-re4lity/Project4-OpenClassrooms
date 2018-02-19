@@ -97,7 +97,7 @@ class Controler
     }
     public static function deleteComment(){
         require_once('model/CommentManager.php');
-        require_once('model/ReportedCommentsManager.php');
+        require_once('model/ReportedCommentManager.php');
         $commentManager = new CommentManager();
         $reportedCommentsManager = new ReportedCommentsManager();
         $commentManager->deleteComment();
