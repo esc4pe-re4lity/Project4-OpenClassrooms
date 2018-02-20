@@ -116,7 +116,7 @@ class Controler
         $row=$result->fetch();
         if($row['pseudo']==$user->getPseudo() && $row['password']==$user->getPassword()){
             $user->setEmail($row['email']);
-            $user->setAdmin($row['admin']);
+            $user->setAdmin($row['isAdmin']);
             return $user;
         }else{
             return 'Le pseudo et/ou le mot de passe est incorrect';
@@ -184,5 +184,8 @@ EOD;
         $password = utf8_decode($_POST['password']);
         $updatedUser->setPassword($password);
         $userManager->updateUser($updatedUser);
+        $user = $_SESSION['user'];
+        $user->setPassword($password);
+        return $user;
     }
 }

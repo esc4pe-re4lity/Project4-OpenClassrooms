@@ -107,7 +107,6 @@ class Rooter {
                 if(isset($_POST['title'])&&isset($_POST['content'])){
                     if(!empty(trim($_POST['title']))&&!empty(trim($_POST['content']))){
                         $postId = Controler::addPost();
-                        $action = 'addPost';
                         header('Location: index.php?action=post&id='.$postId);
                     }else{
                         throw new Exception('Formulaire incomplet ou vide');
@@ -136,7 +135,6 @@ class Rooter {
                             if(isset($_POST['title'])&&isset($_POST['content'])){
                                 if(!empty(trim($_POST['title']))&&!empty(trim($_POST['content']))){
                                     Controler::updatePost();
-                                    $action = 'updatePost';
                                     header('Location: index.php?action=post&id='.$id);
                                 }else{
                                     throw new Exception('Formulaire incomplet ou vide');
@@ -171,7 +169,6 @@ class Rooter {
                         $user = $_SESSION['user'];
                         if($user->getAdmin() == 1){
                             Controler::deletePost();
-                            $action = 'deletePost';
                             header('Location: index.php');
                         }else{
                             throw new Exception('Vous devez être Admin pour accéder au contenu de cette page');
@@ -194,7 +191,6 @@ class Rooter {
                 if(isset($_POST['content'])){
                     if(!empty(trim($_POST['content']))){
                         Controler::addComment();
-                        $action = 'addComment';
                         header('Location: index.php?action=post&id='.$idPost);
                     }else{
                         throw new Exception('Formulaire incomplet ou vide');
@@ -217,7 +213,6 @@ class Rooter {
                     $user = $_SESSION['user'];
                     if($user->getAdmin() == 1){
                         Controler::deleteComment();
-                        $action = 'deleteComment';
                         header('Location: index.php');
                     }else{
                         throw new Exception('Vous devez être Admin pour accéder au contenu de cette page');
@@ -243,7 +238,6 @@ class Rooter {
                         throw new Exception('L\'admin n\'a pas besoin de signaler les commentaires, il peut les supprimer directement');
                     }else{
                         Controler::reportComment();
-                        $action = 'reportComment';
                         header('Location: index.php?action=post&id='.$idPost);
                     }
                 }else{
@@ -281,7 +275,6 @@ class Rooter {
                     $user = Controler::createAccount();
                     $_SESSION['user'] = $user;
                     Controler::sendEmail();
-                    $action = 'createAccount';
                     header('Location: index.php');
                 }else{
                     throw new Exception('Pseudo déjà utilisé');
@@ -304,7 +297,6 @@ class Rooter {
                         $updatedUser = Controler::updateUser();
                         $_SESSION=array();
                         $_SESSION['user'] = $updatedUser;
-                        $action = 'updateUser';
                         header('Location: index.php?action=updateUser');
                     }else{
                         throw new Exception('Pseudo déjà utilisé');
@@ -328,8 +320,9 @@ class Rooter {
             $user = $_SESSION['user'];
             if(isset($_POST['password'])){
                 if(!empty(trim($_POST['password']))){
-                    Controler::updatePassword();
-                    $action = 'updateUser';
+                    $updatedUser = Controler::updatePassword();
+                    $_SESSION=array();
+                    $_SESSION['user'] = $updatedUser;
                     header('Location: index.php?action=updateUser');
                 }else{
                     throw new Exception('Formulaire incomplet ou vide');
@@ -352,7 +345,6 @@ class Rooter {
                 throw new Exception($result);
             }else{
                 $_SESSION['user'] = $result;
-                $action = 'login';
                 header('Location: index.php');
             }
         }else{
@@ -362,7 +354,6 @@ class Rooter {
     protected function logout(){
         $_SESSION=array();
         session_destroy();
-        $action = 'logout';
         header('Location: index.php');
     }
     protected function initURL(){
