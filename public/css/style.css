@@ -200,7 +200,6 @@ form #info
 }
 form input[type="submit"]
 {
-    border: none;
     width: 60%;
     font-size: 1em;
     cursor: pointer;
@@ -295,6 +294,10 @@ form input[type="submit"]
 
 
 /* ----- MY PROFIL ------ */
+#userUpdateForm
+{
+    display: none;
+}
 .box
 {
     padding: 10px 30px 30px 30px;
@@ -303,6 +306,10 @@ form input[type="submit"]
 .box>div
 {
     margin-left: 100px;
+}
+#userUpdateForm form
+{
+    margin-bottom: 30px;
 }
 #userProfil a
 {
