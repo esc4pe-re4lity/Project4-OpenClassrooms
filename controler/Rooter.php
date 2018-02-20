@@ -20,7 +20,7 @@ spl_autoload_register('chargerClasse');
 session_start();
 
 class Rooter {
-    
+    private static $instance;
     protected $user;
     
     public function setUser($user){
@@ -32,11 +32,17 @@ class Rooter {
         return $this->user;
     }
     
-    public function __construct(){
+    private function __construct(){
         $this->initURL();
     }
+    public static function getInstance(){
+        if(!isset(self::$instance)){
+            self::$instance = new self;
+        }
+        return self::$instance;
+    }
     
-    private function ifAdmin($fileName){
+    protected function ifAdmin($fileName){
         if(isset($_SESSION['user'])){
             $this->setUser($_SESSION['user']);
             if($this->getUser()->getAdmin() === 1){
@@ -51,7 +57,7 @@ class Rooter {
             return $url;
         }
     }
-    private function allPosts(){
+    protected function allPosts(){
         if(isset($_GET['page'])){
             $page = (int)$_GET['page'];
             $paging = Controler::paging($page);
@@ -75,7 +81,7 @@ class Rooter {
             require($url);
         }
     }
-    private function post(){
+    protected function post(){
         if(isset($_GET['id'])){
             $id = (int)$_GET['id'];
             if(!empty($id)){
@@ -95,7 +101,7 @@ class Rooter {
             throw new Exception('L\'identifiant du post doit être déterminé');
         }
     }
-    private function addPost(){
+    protected function addPost(){
         if(isset($_SESSION['user'])){
             $user = $_SESSION['user'];
             if($user->getAdmin() == 1){
@@ -117,7 +123,7 @@ class Rooter {
             throw new Exception('Vous devez vous identifier pour pouvoir accéder au contenu de cette page');
         }
     }
-    private function updatePost(){
+    protected function updatePost(){
         if(isset($_GET['id'])){
             $id = (int)$_GET['id'];
             if(!empty($id)){
@@ -154,7 +160,7 @@ class Rooter {
             throw new Exception('L\'identifiant du post doit être déterminé');
         }
     }
-    private function deletePost(){
+    protected function deletePost(){
         if(isset($_GET['id'])){
             $id = (int)$_GET['id'];
             if(!empty($id)){
@@ -182,7 +188,7 @@ class Rooter {
             throw new Exception('L\'identifiant du post doit être déterminé');
         }
     }
-    private function addComment(){
+    protected function addComment(){
         if(isset($_GET['idPost'])){
             $idPost = (int)$_GET['idPost'];
             if(!empty($idPost)){
@@ -204,7 +210,7 @@ class Rooter {
             throw new Exception('L\'identifiant du post doit être déterminé');
         }
     }
-    private function deleteComment(){
+    protected function deleteComment(){
         if(isset($_GET['id'])){
             $id = (int)$_GET['id'];
             if(!empty($id)){
@@ -227,7 +233,7 @@ class Rooter {
             throw new Exception('L\'identifiant du commentaire doit être déterminé');
         }
     }
-    private function reportComment(){
+    protected function reportComment(){
         if(isset($_GET['id'])&&isset($_GET['idPost'])){
             $id = (int)$_GET['id'];
             $idPost = (int)$_GET['idPost'];
@@ -251,7 +257,7 @@ class Rooter {
             throw new Exception('L\'identifiant du post doit être déterminé');
         }
     }
-    private function getReportedComments(){
+    protected function getReportedComments(){
         if(isset($_SESSION['user'])){
             $user = $_SESSION['user'];
             if($user->getAdmin() == 1){
@@ -268,7 +274,7 @@ class Rooter {
             throw new Exception('Vous devez vous identifier pour pouvoir signaler le commentaire');
         }
     }
-    private function createAccount(){
+    protected function createAccount(){
         if(isset($_POST['pseudo'])&&isset($_POST['password'])&&isset($_POST['email'])){
             if(!empty(trim($_POST['pseudo']))&&!empty(trim($_POST['password']))&&!empty(trim($_POST['email']))){
                 $result = Controler::pseudoExists();
@@ -288,20 +294,20 @@ class Rooter {
             require('view/createAccount.php');
         }
     }
-    private function updateUser(){
+    protected function updateUser(){
         if(isset($_SESSION['user'])){
             $user = $_SESSION['user'];
             if(isset($_POST['pseudo'])&&isset($_POST['email'])){
                 if(!empty(trim($_POST['pseudo']))&&!empty(trim($_POST['email']))){
                     $result = Controler::pseudoExists();
-                    var_dump($result);/*
-                    if($result->rowCount() == 0 && $result !== $user->getPseudo()){
+                    $row=$result->fetch();
+                    if($result->rowCount() == 0 || $row['pseudo'] === $user->getPseudo()){
                         Controler::updateUser();
                         $action = 'updateUser';
                         header('Location: index.php');
                     }else{
                         throw new Exception('Pseudo déjà utilisé');
-                    }*/
+                    }
                 }else{
                     throw new Exception('Formulaire incomplet ou vide');
                 }
@@ -316,7 +322,7 @@ class Rooter {
             throw new Exception('Vous devez vous identifier pour pouvoir accéder au contenu de cette page');
         }
     }
-    private function login(){
+    protected function login(){
         if(isset($_POST['pseudo'])&&isset($_POST['password'])){
             $result = Controler::login();
             if(is_string($result)){
@@ -330,13 +336,13 @@ class Rooter {
             require('view/login.php');
         }
     }
-    private function logout(){
+    protected function logout(){
         $_SESSION=array();
         session_destroy();
         $action = 'logout';
         header('Location: index.php');
     }
-    private function initURL(){
+    protected function initURL(){
         try{
             if(isset($_GET['action'])){
                 if($_GET['action'] == 'allPosts'){
