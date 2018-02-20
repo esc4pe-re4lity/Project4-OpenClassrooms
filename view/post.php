@@ -69,11 +69,6 @@ while ($comment = $comments->fetch(PDO::FETCH_ASSOC))
 
 <?php  ob_start(); ?>
 <script>
-    var submitButton = document.querySelector("form[type=\"submit\"]");
-    var submittedForm = submitButton.addEventListener("click", function(){
-        return true;
-    });
-    console.log(submittedForm);
 </script>
 <?php if(isset($displayBanner)){
     echo htmlspecialchars($displayBanner);

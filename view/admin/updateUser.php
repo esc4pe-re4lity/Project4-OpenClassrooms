@@ -18,7 +18,8 @@
             <?=htmlspecialchars($user->getEmail())?>
         </p>
     </div>
-    <div id="userUpdateForm" style="display: none;">
+    <div id="userUpdateForm">
+        <a href="index.php?action=updateUser">&#60;</a>
         <form method="post" action="index.php?action=updateUser">
             <p>
                 <label for="pseudo">Pseudo : </label>
@@ -28,13 +29,20 @@
                 <label for="email">Email : </label>
                 <input type="texte" name="email" id="email" value="<?=htmlspecialchars($user->getEmail())?>" required/>
             </p>
+            <p><input class="button" type="submit" value="Enregistrer les modifications"/></p>
+        </form>
+        <form method="post" action="index.php?action=updatePassword">
+            <h3>Modifier mon mot de passe</h3>
             <p>
-                <label for="password">Créez un mot de passe</label>
+                <label for="password">Nouveau mot de passe</label><br/>
                 <input type="password" name="password" id="password" required/>
             </p>
             <p>
-                <label for="confirmPassword">Confirmez votre mot de passe</label>
+                <label for="confirmPassword">Confirmez votre nouveau mot de passe</label><br/>
                 <input type="password" name="confirmPassword" id="confirmPassword" required/>
+            </p>
+            <p>
+                <span id="info"></span>
             </p>
             <p><input class="button" type="submit" value="Enregistrer les modifications"/></p>
         </form>
@@ -55,13 +63,6 @@
     document.getElementById("email").addEventListener("change",verifyEmail);
     document.getElementById("password").addEventListener("input",verifyPassword);
     document.getElementById("confirmPassword").addEventListener("change", verifyConfPassword);
-    document.querySelector("form").addEventListener("submit", function(e){
-        var formOK = verifyForm();
-        if(formOK === false){
-            e.preventDefault();
-            formNOK();
-        }
-    });
 </script>
 <?php $script = ob_get_clean(); ?>
 
