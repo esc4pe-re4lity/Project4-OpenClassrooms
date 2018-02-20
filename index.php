@@ -1,3 +1,3 @@
 <?php
 require('controler/Rooter.php');
-$rooter = new Rooter();
+$rooter = Rooter::getInstance();
