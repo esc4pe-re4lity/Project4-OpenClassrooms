@@ -74,11 +74,6 @@ for($i=1; $i<=$paging->getNumberOfPages(); $i++){
     $('i').filter('[class="fa fa-user-circle"]').click(displayNav);
     $('i').filter('[class="fa fa-trash"]').click(confirmDelete);
 </script>
-<?php
-if(isset($action)){ ?>
-<script>displayBanner(<?= $action ?>);</script>
-<?php
-} ?>
 <?php $script = ob_get_clean(); ?>
 
 

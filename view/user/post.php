@@ -83,11 +83,6 @@ while ($comment = $comments->fetch(PDO::FETCH_ASSOC))
     var i = 0;
     $('i').filter('[class="fa fa-user-circle"]').click(displayNav);
 </script>
-<?php
-if(isset($action)){ ?>
-<script>displayBanner(<?= $action ?>);</script>
-<?php
-} ?>
 <?php $script = ob_get_clean(); ?>
 
 

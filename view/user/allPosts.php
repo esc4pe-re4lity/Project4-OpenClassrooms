@@ -59,11 +59,6 @@ for($i=1; $i<=$paging->getNumberOfPages(); $i++){
     var i = 0;
     $('i').filter('[class="fa fa-user-circle"]').click(displayNav);
 </script>
-<?php
-if(isset($action)){ ?>
-<script>displayBanner(<?= $action ?>);</script>
-<?php
-} ?>
 <?php $script = ob_get_clean(); ?>
 
 

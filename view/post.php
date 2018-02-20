@@ -68,11 +68,6 @@ while ($comment = $comments->fetch(PDO::FETCH_ASSOC))
 
 
 <?php  ob_start(); ?>
-<script>
-</script>
-<?php if(isset($displayBanner)){
-    echo htmlspecialchars($displayBanner);
-} ?>
 <?php $script = ob_get_clean(); ?>
 
 

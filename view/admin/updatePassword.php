@@ -35,10 +35,6 @@
 
 
 <?php  ob_start(); ?>
-<script src="../public/js/functions.js"></script>
-<script>
-
-</script>
 <?php $script = ob_get_clean(); ?>
 
 

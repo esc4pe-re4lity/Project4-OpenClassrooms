@@ -64,11 +64,6 @@
     document.getElementById("password").addEventListener("input",verifyPassword);
     document.getElementById("confirmPassword").addEventListener("change", verifyConfPassword);
 </script>
-<?php
-if(isset($action)){ ?>
-<script>displayBanner(<?= $action ?>);</script>
-<?php
-} ?>
 <?php $script = ob_get_clean(); ?>
 
 

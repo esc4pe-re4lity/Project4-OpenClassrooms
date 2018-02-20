@@ -55,12 +55,6 @@ for($i=1; $i<=$paging->getNumberOfPages(); $i++){
 
 
 <?php  ob_start(); ?>
-<script src="../public/js/functions.js"></script>
-<?php
-if(isset($action)){ ?>
-<script>displayBanner(<?= $action ?>);</script>
-<?php
-} ?>
 <?php $script = ob_get_clean(); ?>
 
 
