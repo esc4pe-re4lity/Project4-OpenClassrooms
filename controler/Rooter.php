@@ -31,15 +31,14 @@ class Rooter {
     public function getUser(){
         return $this->user;
     }
-    
-    private function __construct(){
-        $this->initURL();
-    }
     public static function getInstance(){
         if(!isset(self::$instance)){
             self::$instance = new self;
         }
         return self::$instance;
+    }
+    private function __construct(){
+        $this->initURL();
     }
     
     protected function ifAdmin($fileName){
@@ -302,12 +301,36 @@ class Rooter {
                     $result = Controler::pseudoExists();
                     $row=$result->fetch();
                     if($result->rowCount() == 0 || $row['pseudo'] === $user->getPseudo()){
-                        Controler::updateUser();
+                        $updatedUser = Controler::updateUser();
+                        $_SESSION=array();
+                        $_SESSION['user'] = $updatedUser;
                         $action = 'updateUser';
-                        header('Location: index.php');
+                        header('Location: index.php?action=updateUser');
                     }else{
                         throw new Exception('Pseudo déjà utilisé');
                     }
+                }else{
+                    throw new Exception('Formulaire incomplet ou vide');
+                }
+            }else{
+                if($user->getAdmin() == 1){
+                    require('view/admin/updateUser.php');
+                }else{
+                    require('view/user/updateUser.php');
+                }
+            }
+        }else{
+            throw new Exception('Vous devez vous identifier pour pouvoir accéder au contenu de cette page');
+        }
+    }
+    protected function updatePassword(){
+        if(isset($_SESSION['user'])){
+            $user = $_SESSION['user'];
+            if(isset($_POST['password'])){
+                if(!empty(trim($_POST['password']))){
+                    Controler::updatePassword();
+                    $action = 'updateUser';
+                    header('Location: index.php?action=updateUser');
                 }else{
                     throw new Exception('Formulaire incomplet ou vide');
                 }
@@ -356,6 +379,9 @@ class Rooter {
                 }
                 elseif($_GET['action'] == 'updatePost'){
                     $this->updatePost();
+                }
+                elseif($_GET['action'] == 'updatePassword'){
+                    $this->updatePassword();
                 }
                 elseif($_GET['action'] == 'deletePost'){
                     $this->deletePost();
