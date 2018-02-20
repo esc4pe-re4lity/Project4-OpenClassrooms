@@ -43,11 +43,6 @@ function displayNav(){
     }
 }
 
-function displayBanner(action){
-    action = String(action);
-    document.getElementById("action").style.display = "block";
-}
-
 var verifyPseudo = function(){
     var formElt = document.querySelector("form"),
         pseudoElt = formElt.pseudo,
@@ -84,7 +79,7 @@ var verifyEmail = function(){
 
 var verifyPassword = function(){
     var formElt = document.querySelector("form"),
-        passwordElt = formElt.password,
+        passwordElt = document.getElementById("password"),
         infoElt = document.getElementById("info"),
         regexLowPassword = /^(?=.*[a-z])|(?=.*[A-Z])|(?=.*[0-9])|(?=.*[-_*\#!$?+@])/,
         regexMediumPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[-_*\#!$?+@])/,
@@ -113,8 +108,8 @@ var verifyPassword = function(){
 
 var verifyConfPassword = function(){
     var formElt = document.querySelector("form"),
-        passwordElt = formElt.password,
-        passwordConfElt = formElt.confirmPassword,
+        passwordElt = document.getElementById("password"),
+        passwordConfElt = document.getElementById("confirmPassword"),
         infoElt = document.getElementById("info");
     infoElt.textContent = "";
     if(passwordConfElt.value !== passwordElt.value){
