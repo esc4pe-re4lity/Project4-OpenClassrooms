@@ -226,7 +226,7 @@ form input[type="submit"]
 
 
 /* ----- POSTS ----- */
-.posts
+.posts, .box
 {
     text-align: justify;
     margin: auto;
@@ -294,6 +294,35 @@ form input[type="submit"]
 /* ----- FIN - COMMENTS ----- */
 
 
+/* ----- MY PROFIL ------ */
+.box
+{
+    padding: 10px 30px 30px 30px;
+    min-height: 500px;
+}
+.box>div
+{
+    margin-left: 100px;
+}
+#userProfil a
+{
+    display: inline-block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px 0;
+    color: #f5f5f5;
+    font-size: 1em;
+    text-align: center;
+}
+#userProfil .button
+{
+    width: 80px;
+    border: 2px solid #72777c;
+    border-radius: 5px;
+}
+/* ----- FIN - MY PROFIL ----- */
+
+
 /* ----- TOOLBAR ----- */
 .admin-posts
 {
@@ -349,7 +378,7 @@ form input[type="submit"]
     color: #72777c;
     transition: background-color 0.2s ease-in-out;
 }
-.button:hover i, .button:focus i
+.button:hover i, .button:focus i, #userProfil .button:hover a, #userProfil .button:focus a
 {
     color: #72777c;
 }
