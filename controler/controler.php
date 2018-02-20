@@ -99,9 +99,9 @@ class Controler
         require_once('model/CommentManager.php');
         require_once('model/ReportedCommentManager.php');
         $commentManager = new CommentManager();
-        $reportedCommentsManager = new ReportedCommentsManager();
+        $reportedCommentManager = new ReportedCommentManager();
         $commentManager->deleteComment();
-        $reportedCommentsManager->deleteReportedComment();
+        $reportedCommentManager->deleteReportedComment();
     }
     public static function login(){
         require_once('model/User.php');
@@ -162,9 +162,27 @@ EOD;
         mail($to, $subject, $message, $headers);
     }
     public static function updateUser(){
-        $user = $_SESSION['user'];
-        require('model/UserManager.php');
+        require_once('model/User.php');
+        require_once('model/UserManager.php');
+        $updatedUser = new User();
         $userManager = new UserManager();
-        $userManager->updateUser($user);
+        $pseudo = utf8_decode($_POST['pseudo']);
+        $email = utf8_decode($_POST['email']);
+        $updatedUser->setPseudo($pseudo);
+        $updatedUser->setEmail($email);
+        $userManager->updateUser($updatedUser);
+        $user = $_SESSION['user'];
+        $user->setPseudo($pseudo);
+        $user->setEmail($email);
+        return $user;
+    }
+    public static function updatePassword(){
+        require_once('model/User.php');
+        require_once('model/UserManager.php');
+        $updatedUser = new User();
+        $userManager = new UserManager();
+        $password = utf8_decode($_POST['password']);
+        $updatedUser->setPassword($password);
+        $userManager->updateUser($updatedUser);
     }
 }
