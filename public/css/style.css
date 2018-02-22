@@ -426,6 +426,10 @@ form input[type="submit"]
 
 
 /* ----- WYSIWYG EDITOR ----- */
+p strong
+{
+    font-weight: 400;
+}
 #text-editor
 {
     width: 70%;
