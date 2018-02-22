@@ -72,7 +72,7 @@ for($i=1; $i<=$paging->getNumberOfPages(); $i++){
 <script>
     var i = 0;
     $('i').filter('[class="fa fa-user-circle"]').click(displayNav);
-    $('i').filter('[class="fa fa-trash"]').click(confirmDelete);
+    $('a').filter('[title="Supprimer"]').click(confirmDelete);
 </script>
 <?php $script = ob_get_clean(); ?>
 

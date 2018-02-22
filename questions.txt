@@ -68,3 +68,36 @@ if ($('div').filter('[class=radio]').prop('checked'))
                                     .click()
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
+
+
+Résoudre le problème avec pseudoExists lors de l'update d'un profil
+Ajouter les champs de mdp pour le modifier
+user : Inscrit depuis le + tant de commentaires écrits + avoir accès aux commentaires rédigés
+admin : inscrit depuis le + tant de commentaires et de post écrits + avoir accès aux commentaires et possibilité de les modifier
+        + tant de commentaires signalés
+
+
+instancier chaque manager une seule fois dans le Controler
+
+LIKE dans le SQL pour faire une recherche
+rajouter plugin git
+suppression annuler
+qu'est ce qu'un objet
+questions pièges
+architecture n-tier soit monobloc soit distribuer : plus pour les logiciels
+se renseigner sur ajax
+sorte de boutique en ligne avec un systeme de résa
+liste des projets pour le P5 avec un petit fichier pdf explicatif
+serveur écrit en brut avec une api rest
+
+SESSION['user'] =
+admin
+admin@admin.com
+unmotdepasse
+
+POST['user'] =
+admina
+admina@admin.com
+unmotdepasse
+

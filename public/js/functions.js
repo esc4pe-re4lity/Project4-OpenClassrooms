@@ -27,7 +27,7 @@ function confirmSubmit(e){
 }
 
 function confirmDelete(e){
-    var message = "Etes-vous sûr de vouloir supprimer cet article ?";
+    var message = "Etes-vous sûr de vouloir supprimer ce contenu ?";
     if(confirm(message) === false){
         e.preventDefault();
     }
