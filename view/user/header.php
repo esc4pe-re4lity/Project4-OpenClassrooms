@@ -33,34 +33,4 @@
         </nav>
     </div>
 </div>
-
-<div id="banner">
-    <div class="banner" id="deleteComment">
-        <p>
-            Le commentaire a bien été supprimé 
-        </p>
-    </div>
-    <div class="banner" id="createAccount">
-        <p>
-            Bienvenue <?= ucfirst(htmlspecialchars($user->getPseudo())) ?> !<br/>
-            Un e-mail de confirmation vous a été envoyé
-        </p>
-    </div>
-    <div class="banner" id="updateUser">
-        <p>
-            Vos informations personnelles ont bien modifiées
-        </p>
-    </div>
-    <div class="banner" id="login">
-        <p>
-            Bienvenue <?= ucfirst(htmlspecialchars($user->getPseudo())) ?> !<br/>
-            Vous êtes connecté
-        </p>
-    </div>
-    <div class="banner" id="logout">
-        <p>
-            Vous êtes déconnecté
-        </p>
-    </div>
-</div>
 <?php $header = ob_get_clean(); ?>
