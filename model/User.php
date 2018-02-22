@@ -28,9 +28,7 @@ class User
         }
     }
     public function setPassword($password){
-        // A FAIRE - ajouter un salt aléatoirement et le stocker dans le db
-        $salt=hash('sha256',$this->pseudo);
-        $this->password=crypt($password,$salt);
+        $this->password=hash('sha256',$password);
     }
     public function setEmail($email){
         if(is_string($email)){
