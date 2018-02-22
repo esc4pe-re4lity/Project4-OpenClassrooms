@@ -183,7 +183,7 @@ EOD;
         $userManager = new UserManager();
         $password = utf8_decode($_POST['password']);
         $updatedUser->setPassword($password);
-        $userManager->updateUser($updatedUser);
+        $userManager->updatePassword($updatedUser);
         $user = $_SESSION['user'];
         $user->setPassword($password);
         return $user;
