@@ -95,7 +95,7 @@ var verifyPassword = function(){
             passwordElt.className = "correct";
             return true;
         }else if(regexLowPassword.test(passwordElt.value)){
-            infoElt.textContent = "Vous blaguez j'espère...";
+            infoElt.textContent = "Le mot de passe doit contenir au minimum minuscule, majuscule, chiffre et un caractère spécial";
             passwordElt.className = "incorrect";
             return false;
         }
