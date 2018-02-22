@@ -4,9 +4,7 @@ class Post
     protected   $title,
                 $content,
                 $excerpt,
-                $creationDate,
-                $updated,
-                $updatedDate;
+                $updated;
     
     public function getTitle(){
         return $this->title;
@@ -17,14 +15,8 @@ class Post
     public function getExcerpt(){
         return $this->excerpt;
     }
-    public function getCreationDate(){
-        return $this->creationDate;
-    }
     public function getUpdated(){
         return $this->updated;
-    }
-    public function getUpdatedDate(){
-        return $this->updatedDate;
     }
     public function setTitle($title){
         if(is_string($title)){
@@ -45,22 +37,9 @@ class Post
             $this->excerpt = $this->content;
         }
     }
-    public function setCreationDate($creationDate){
-        $formatter = new IntlDateFormatter('fr_FR',
-                        IntlDateFormatter::FULL,
-                        IntlDateFormatter::SHORT,
-                        'Europe/Paris',
-                        IntlDateFormatter::GREGORIAN);
-        $date = new DateTime($creationDate);
-        $this->creationDate = $formatter->format($date);
-    }
     public function setUpdated($updated){
         if(is_bool($updated)){
             $this->updated = $updated;
         }
-    }
-    public function setUpdatedDate($updatedDate){
-        // mettre la date au bon format
-        $this->updatedDate = $updatedDate;
     }
 }

@@ -4,7 +4,6 @@ class User
     protected   $pseudo,
                 $password,
                 $email,
-                $creationDate,
                 $admin;
     
     public function getPseudo(){
@@ -15,9 +14,6 @@ class User
     }
     public function getEmail(){
         return $this->email;
-    }
-    public function getCreationDate(){
-        return $this->creationDate;
     }
     public function getAdmin(){
         return $this->admin;
@@ -34,10 +30,6 @@ class User
         if(is_string($email)){
             $this->email = $email;
         }
-    }
-    public function setCreationDate($creationDate){
-        // A FAIRE - mettre la date au bon format
-        $this->creationDate = $creationDate;
     }
     public function setAdmin($admin){
         $int = (int)$admin;
