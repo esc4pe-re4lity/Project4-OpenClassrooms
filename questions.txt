@@ -78,26 +78,15 @@ admin : inscrit depuis le + tant de commentaires et de post écrits + avoir acc�
         + tant de commentaires signalés
 
 
-instancier chaque manager une seule fois dans le Controler
 
 LIKE dans le SQL pour faire une recherche
 rajouter plugin git
-suppression annuler
-qu'est ce qu'un objet
-questions pièges
+
 architecture n-tier soit monobloc soit distribuer : plus pour les logiciels
 se renseigner sur ajax
 sorte de boutique en ligne avec un systeme de résa
 liste des projets pour le P5 avec un petit fichier pdf explicatif
 serveur écrit en brut avec une api rest
 
-SESSION['user'] =
-admin
-admin@admin.com
-unmotdepasse
-
-POST['user'] =
-admina
-admina@admin.com
-unmotdepasse
-
+faire un fichier config avec un return
+uml avec tous les diagrammes : unified model langage

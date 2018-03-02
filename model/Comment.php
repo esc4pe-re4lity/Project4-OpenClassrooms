@@ -1,13 +1,14 @@
 <?php
 class Comment
 {
-    protected   $idPost,
+    protected   $id,
+                $idPost,
                 $author,
                 $content,
                 $creationDate,
                 $reported;
     
-    public function __construct() {
+    public function __construct(array $data) {
         $this->hydrate($data);
     }
     public function hydrate(array $data){
@@ -17,6 +18,9 @@ class Comment
             $this->$method($value);
           }
         }
+    }
+    public function getId(){
+        return $this->id;
     }
     public function getIdPost(){
         return $this->idPost;
@@ -33,10 +37,11 @@ class Comment
     public function getReported(){
         return $this->reported;
     }
+    public function setId($id){
+        $this->id = (int) $id;
+    }
     public function setIdPost($idPost){
-        if(is_int($idPost)){
-            $this->idPost = $idPost;
-        }
+        $this->idPost = (int) $idPost;
     }
     public function setAuthor($author){
         if(is_string($author)){
@@ -49,8 +54,12 @@ class Comment
         }
     }
     public function setCreationDate($creationDate){
-        // mettre la date au bon format
-        $this->creationDate = $creationDate;
+        $formatter = new    IntlDateFormatter('fr_FR',IntlDateFormatter::FULL,
+                            IntlDateFormatter::SHORT,
+                            'Europe/Paris',
+                            IntlDateFormatter::GREGORIAN);
+        $formattedDate = new DateTime($creationDate);
+        $this->creationDate = $formatter->format($formattedDate);
     }
     public function setReported($reported){
         if(is_bool($reported)){

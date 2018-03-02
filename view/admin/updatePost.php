@@ -4,22 +4,16 @@
 <?php require('header.php'); ?>
 
 
-<?php ob_start();
-while ($data = $post->fetch(PDO::FETCH_ASSOC))
-{
-?>
-<form method="post" id="text-editor" action="index.php?action=updatePost&amp;id=<?=$data['id']?>">
+<?php ob_start(); ?>
+<form method="post" id="text-editor" action="index.php?action=updatePost&amp;id=<?=$post->getId()?>">
     <p>
-        <input type="texte" name="title" id="title" placeholder="Titre" value="<?=htmlspecialchars(utf8_encode(($data['title'])))?>" required/>
+        <input type="texte" name="title" id="title" placeholder="Titre" value="<?=htmlspecialchars(utf8_encode(($post->getTitle())))?>" required/>
     </p>
     <p>
-        <textarea name="content" id="content" placeholder="Ecrivez ici..." class="wysiwyg-editor"><?=nl2br(utf8_encode($data['content']))?></textarea>
+        <textarea name="content" id="content" placeholder="Ecrivez ici..." class="wysiwyg-editor"><?=nl2br(utf8_encode($post->getContent()))?></textarea>
     </p>
     <p><input class="button" type="submit" value="Envoyer"/></p>
 </form>
-<?php
-}
-?>
 <?php $section = ob_get_clean(); ?>
 
 

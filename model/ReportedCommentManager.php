@@ -3,21 +3,24 @@ require_once('DBFactory.php');
 class ReportedCommentManager
 {
     public function getReportedComments(){
+        $reportedComments = [];
         $db = DBFactory::loadDB();
         $q=$db->query('SELECT * FROM comments WHERE reported=true');
-        // faire une jonction entre la table signaledComments et la table comments
-        return $q;
+        while($data=$q->fetch(PDO::FETCH_ASSOC)){
+            $reportedComments[] = new Comment($data);
+        }
+        return $reportedComments;
     }
-    public function reportComment(){
+    public function reportComment($idComment, $idPost){
         $user = $_SESSION['user'];
         $db = DBFactory::loadDB();
-        $req=$db->prepare('INSERT INTO reportedComments(idComment, pseudo, creationDate) VALUES(:idComment, :pseudo, NOW())');
-        $req->execute(array('idComment'=>$_GET['id'],'pseudo'=>$user->getPseudo()));
+        $req=$db->prepare('INSERT INTO reportedComments(idComment, idPost, pseudo, creationDate) VALUES(:idComment, :idPost, :pseudo, NOW())');
+        $req->execute(array('idComment'=>$idComment,'idPost'=>$idPost,'pseudo'=>$user->getPseudo()));
         $req->closeCursor();
-        $q=$db->query('UPDATE comments SET reported=true WHERE id='.$_GET['id']);
+        $q=$db->query('UPDATE comments SET reported=true WHERE id='.$idComment);
     }
-    public function deleteReportedComment(){
+    public function deleteReportedComment($idComment){
         $db = DBFactory::loadDB();
-        $q=$db->query('DELETE FROM reportedComments WHERE idComment='.$_GET['id']);
+        $q=$db->query('DELETE FROM reportedComments WHERE idComment='.$idComment);
     }
 }

@@ -6,16 +6,16 @@
 
 <?php ob_start(); ?>
 <?php
-while ($comment = $comments->fetch(PDO::FETCH_ASSOC))
+foreach ($comments as $comment)
 {
 ?>
 <div class="admin-posts">
     <div class="comments">
         <div class="comment-title">
-            <h3><?= ucfirst(htmlspecialchars(utf8_encode($comment['author']))) ?></h3>
+            <h3><?= ucfirst(htmlspecialchars(utf8_encode($comment->getAuthor()))) ?></h3>
             <div class="admin-toolbar trash">
                 <div class="font-awesome-icons button">
-                    <a href="index.php?action=deleteComment&amp;id=<?=$comment['id']?>" title="Supprimer">
+                    <a href="index.php?action=deleteComment&amp;id=<?=$comment->getId()?>" title="Supprimer">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                     </a>
                 </div>
@@ -23,16 +23,11 @@ while ($comment = $comments->fetch(PDO::FETCH_ASSOC))
         </div>
         <div class="comment-content">
             <p>
-                <?= nl2br(htmlspecialchars(utf8_encode($comment['content']))) ?>
+                <?= nl2br(htmlspecialchars(utf8_encode($comment->getContent()))) ?>
             </p>
             <p>
                 <time class="date">
-                    <?php $formatter = new IntlDateFormatter('fr_FR',IntlDateFormatter::FULL,
-                                            IntlDateFormatter::SHORT,
-                                            'Europe/Paris',
-                                            IntlDateFormatter::GREGORIAN);
-                    $formattedDate =new DateTime($comment['creationDate']);
-                    echo $formatter->format($formattedDate); ?>
+                    <?= $comment->getCreationDate()?>
                 </time>
             </p>
         </div>

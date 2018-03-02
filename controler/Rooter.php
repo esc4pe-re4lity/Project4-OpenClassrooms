@@ -21,16 +21,7 @@ session_start();
 
 class Rooter {
     private static $instance;
-    protected $user;
     
-    public function setUser($user){
-        if(is_object($user)){
-            $this->user = $user;
-        }
-    }
-    public function getUser(){
-        return $this->user;
-    }
     public static function getInstance(){
         if(!isset(self::$instance)){
             self::$instance = new self;
@@ -43,8 +34,9 @@ class Rooter {
     
     protected function ifAdmin($fileName){
         if(isset($_SESSION['user'])){
-            $this->setUser($_SESSION['user']);
-            if($this->getUser()->getAdmin() === 1){
+            $data = $_SESSION['user'];
+            $user = new User($data);
+            if($user->getIsAdmin() === 1){
                 $url = 'view/admin/'.$fileName.'.php';
                 return $url;
             }else{
@@ -63,9 +55,16 @@ class Rooter {
             if(!empty($page)){
                 if($page <= $paging->getNumberOfPages()){
                     $posts = Controler::getAllPosts($paging);
-                    $url = $this->ifAdmin('allPosts');
-                    $user = $this->getUser();
-                    require($url);
+                    if(isset($_SESSION['user'])){
+                        $user = $_SESSION['user'];
+                        if($user->getIsAdmin() === 1){
+                            require('view/admin/allPosts.php');
+                        }else{
+                            require('view/user/allPosts.php');
+                        }
+                    }else{
+                        require('view/allPosts.php');
+                    }
                 }else{
                     throw new Exception('Le numéro de la page n\'existe pas');
                 }
@@ -75,23 +74,38 @@ class Rooter {
         }else{
             $paging = Controler::paging(1);
             $posts = Controler::getAllPosts($paging);
-            $url = $this->ifAdmin('allPosts');
-            $user = $this->getUser();
-            require($url);
+            if(isset($_SESSION['user'])){
+                $user = $_SESSION['user'];
+                if($user->getIsAdmin() === 1){
+                    require('view/admin/allPosts.php');
+                }else{
+                    require('view/user/allPosts.php');
+                }
+            }else{
+                require('view/allPosts.php');
+            }
         }
     }
     protected function post(){
         if(isset($_GET['id'])){
-            $id = (int)$_GET['id'];
-            if(!empty($id)){
-                $post = Controler::getPost();
-                if($post->rowCount() == 0){
+            $idPost = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+            if($idPost){
+                $result = Controler::idPostExists($idPost);
+                if($result === false){
                     throw new Exception('Ce post n\'existe pas');
-                }else{
-                    $comments = Controler::getComments();
-                    $url = $this->ifAdmin('post');
-                    $user = $this->getUser();
-                    require($url);
+                }else if($result === true){
+                    $post = Controler::getPost($idPost);
+                    $comments = Controler::getComments($idPost);
+                    if(isset($_SESSION['user'])){
+                        $user = $_SESSION['user'];
+                        if($user->getIsAdmin() === 1){
+                            require('view/admin/post.php');
+                        }else{
+                            require('view/user/post.php');
+                        }
+                    }else{
+                        require('view/post.php');
+                    }
                 }
             }else{
                 throw new Exception('Aucun identifiant de post a été sélectionné');
@@ -103,11 +117,16 @@ class Rooter {
     protected function addPost(){
         if(isset($_SESSION['user'])){
             $user = $_SESSION['user'];
-            if($user->getAdmin() == 1){
+            if($user->getIsAdmin() == 1){
                 if(isset($_POST['title'])&&isset($_POST['content'])){
                     if(!empty(trim($_POST['title']))&&!empty(trim($_POST['content']))){
-                        $postId = Controler::addPost();
-                        header('Location: index.php?action=post&id='.$postId);
+                        $data = [
+                            'title' => filter_input(INPUT_POST, 'title', FILTER_DEFAULT),
+                            'content' => filter_input(INPUT_POST, 'content', FILTER_DEFAULT),
+                            'excerpt' => filter_input(INPUT_POST, 'content', FILTER_DEFAULT)
+                        ];
+                        $post = Controler::addPost($data);
+                        header('Location: index.php?action=post&id='.$post->getId());
                     }else{
                         throw new Exception('Formulaire incomplet ou vide');
                     }
@@ -123,24 +142,30 @@ class Rooter {
     }
     protected function updatePost(){
         if(isset($_GET['id'])){
-            $id = (int)$_GET['id'];
-            if(!empty($id)){
-                $result = Controler::idPostExists();
-                if($result->rowCount() == 0){
+            $idPost = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+            if($idPost){
+                $result = Controler::idPostExists($idPost);
+                if($result == false){
                     throw new Exception('Ce post n\'existe pas');
-                }else{
+                }else if($result === true){
                     if(isset($_SESSION['user'])){
                         $user = $_SESSION['user'];
-                        if($user->getAdmin() == 1){
+                        if($user->getIsAdmin() == 1){
                             if(isset($_POST['title'])&&isset($_POST['content'])){
                                 if(!empty(trim($_POST['title']))&&!empty(trim($_POST['content']))){
-                                    Controler::updatePost();
-                                    header('Location: index.php?action=post&id='.$id);
+                                    $data = [
+                                        'id' => $idPost,
+                                        'title' => filter_input(INPUT_POST, 'title', FILTER_DEFAULT),
+                                        'content' => filter_input(INPUT_POST, 'content', FILTER_DEFAULT),
+                                        'excerpt' => filter_input(INPUT_POST, 'content', FILTER_DEFAULT)
+                                    ];
+                                    $post = Controler::updatePost($data);
+                                    header('Location: index.php?action=post&id='.$idPost);
                                 }else{
                                     throw new Exception('Formulaire incomplet ou vide');
                                 }
                             }else{
-                                $post = Controler::getPost();
+                                $post = Controler::getPost($idPost);
                                 require('view/admin/updatePost.php');
                             }
                         }else{
@@ -159,16 +184,16 @@ class Rooter {
     }
     protected function deletePost(){
         if(isset($_GET['id'])){
-            $id = (int)$_GET['id'];
-            if(!empty($id)){
-                $result = Controler::idPostExists();
-                if($result->rowCount() == 0){
+            $idPost = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+            if($idPost){
+                $result = Controler::idPostExists($idPost);
+                if($result == false){
                     throw new Exception('Ce post n\'existe pas');
-                }else{
+                }else if($result === true){
                     if(isset($_SESSION['user'])){
                         $user = $_SESSION['user'];
-                        if($user->getAdmin() == 1){
-                            Controler::deletePost();
+                        if($user->getIsAdmin() == 1){
+                            Controler::deletePost($idPost);
                             header('Location: index.php');
                         }else{
                             throw new Exception('Vous devez être Admin pour accéder au contenu de cette page');
@@ -186,11 +211,12 @@ class Rooter {
     }
     protected function addComment(){
         if(isset($_GET['idPost'])){
-            $idPost = (int)$_GET['idPost'];
-            if(!empty($idPost)){
+            $idPost = filter_input(INPUT_GET, 'idPost', FILTER_VALIDATE_INT);
+            if($idPost){
                 if(isset($_POST['content'])){
                     if(!empty(trim($_POST['content']))){
-                        Controler::addComment();
+                        $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                        Controler::addComment($idPost, $content);
                         header('Location: index.php?action=post&id='.$idPost);
                     }else{
                         throw new Exception('Formulaire incomplet ou vide');
@@ -207,12 +233,12 @@ class Rooter {
     }
     protected function deleteComment(){
         if(isset($_GET['id'])){
-            $id = (int)$_GET['id'];
-            if(!empty($id)){
+            $idComment = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+            if($idComment){
                 if(isset($_SESSION['user'])){
                     $user = $_SESSION['user'];
-                    if($user->getAdmin() == 1){
-                        Controler::deleteComment();
+                    if($user->getIsAdmin() === 1){
+                        Controler::deleteComment($idComment);
                         header('Location: index.php');
                     }else{
                         throw new Exception('Vous devez être Admin pour accéder au contenu de cette page');
@@ -229,15 +255,15 @@ class Rooter {
     }
     protected function reportComment(){
         if(isset($_GET['id'])&&isset($_GET['idPost'])){
-            $id = (int)$_GET['id'];
-            $idPost = (int)$_GET['idPost'];
-            if(!empty($id)&&!empty($idPost)){
+            $idComment = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+            $idPost = filter_input(INPUT_GET, 'idPost', FILTER_VALIDATE_INT);
+            if($idComment && $idPost){
                 if(isset($_SESSION['user'])){
                     $user = $_SESSION['user'];
-                    if($user->getAdmin() == 1){
+                    if($user->getIsAdmin() === 1){
                         throw new Exception('L\'admin n\'a pas besoin de signaler les commentaires, il peut les supprimer directement');
                     }else{
-                        Controler::reportComment();
+                        Controler::reportComment($idComment, $idPost);
                         header('Location: index.php?action=post&id='.$idPost);
                     }
                 }else{
@@ -253,9 +279,9 @@ class Rooter {
     protected function getReportedComments(){
         if(isset($_SESSION['user'])){
             $user = $_SESSION['user'];
-            if($user->getAdmin() == 1){
+            if($user->getIsAdmin() == 1){
                 $comments = Controler::getReportedComments();
-                if($comments->rowCount() == 0){
+                if(empty($comments)){
                     throw new Exception('Il n\'y a pas de commentaires signalés');
                 }else{
                     require('view/admin/reportedComments.php');
@@ -270,13 +296,19 @@ class Rooter {
     protected function createAccount(){
         if(isset($_POST['pseudo'])&&isset($_POST['password'])&&isset($_POST['email'])){
             if(!empty(trim($_POST['pseudo']))&&!empty(trim($_POST['password']))&&!empty(trim($_POST['email']))){
-                $result = Controler::pseudoExists();
-                if($result->rowCount() == 0){
-                    $user = Controler::createAccount();
+                $data = [
+                    'pseudo' => filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                    'password' => filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                    'email' => filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
+                ];
+                $result = Controler::pseudoExists($data['pseudo']);
+                if($result === false){
+                    $user = Controler::createAccount($data);
+                    var_dump($user);
                     $_SESSION['user'] = $user;
                     Controler::sendEmail();
                     header('Location: index.php');
-                }else{
+                }else if($result === true){
                     throw new Exception('Pseudo déjà utilisé');
                 }
             }else{
@@ -291,21 +323,24 @@ class Rooter {
             $user = $_SESSION['user'];
             if(isset($_POST['pseudo'])&&isset($_POST['email'])){
                 if(!empty(trim($_POST['pseudo']))&&!empty(trim($_POST['email']))){
-                    $result = Controler::pseudoExists();
-                    $row=$result->fetch();
-                    if($result->rowCount() == 0 || $row['pseudo'] === $user->getPseudo()){
-                        $updatedUser = Controler::updateUser();
+                    $data = [
+                        'pseudo' => filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                        'email' => filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
+                    ];
+                    $result = Controler::pseudoExists($data['pseudo']);
+                    if($result === true || $data['pseudo'] === $user->getPseudo()){
+                        $updatedUser = Controler::updateUser($data);
                         $_SESSION=array();
                         $_SESSION['user'] = $updatedUser;
                         header('Location: index.php?action=updateUser');
-                    }else{
+                    }else if($result === false){
                         throw new Exception('Pseudo déjà utilisé');
                     }
                 }else{
                     throw new Exception('Formulaire incomplet ou vide');
                 }
             }else{
-                if($user->getAdmin() == 1){
+                if($user->getIsAdmin() == 1){
                     require('view/admin/updateUser.php');
                 }else{
                     require('view/user/updateUser.php');
@@ -320,7 +355,10 @@ class Rooter {
             $user = $_SESSION['user'];
             if(isset($_POST['password'])){
                 if(!empty(trim($_POST['password']))){
-                    $updatedUser = Controler::updatePassword();
+                    $data = [
+                        'password' => filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
+                    ];
+                    $updatedUser = Controler::updatePassword($data);
                     $_SESSION=array();
                     $_SESSION['user'] = $updatedUser;
                     header('Location: index.php?action=updateUser');
@@ -328,7 +366,7 @@ class Rooter {
                     throw new Exception('Formulaire incomplet ou vide');
                 }
             }else{
-                if($user->getAdmin() == 1){
+                if($user->getIsAdmin() == 1){
                     require('view/admin/updateUser.php');
                 }else{
                     require('view/user/updateUser.php');
@@ -340,7 +378,11 @@ class Rooter {
     }
     protected function login(){
         if(isset($_POST['pseudo'])&&isset($_POST['password'])){
-            $result = Controler::login();
+            $data = [
+                'pseudo' => filter_input(INPUT_POST, 'pseudo', FILTER_SANITIZE_FULL_SPECIAL_CHARS),
+                'password' => filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS)
+            ];
+            $result = Controler::login($data);
             if(is_string($result)){
                 throw new Exception($result);
             }else{
@@ -407,14 +449,28 @@ class Rooter {
             }else{
                 $paging = Controler::paging(1);
                 $posts = Controler::getAllPosts($paging);
-                $url = $this->ifAdmin('allPosts');
-                $user = $this->getUser();
-                require($url);
+                if(isset($_SESSION['user'])){
+                    $user = $_SESSION['user'];
+                    if($user->getIsAdmin() === 1){
+                        require('view/admin/allPosts.php');
+                    }else{
+                        require('view/user/allPosts.php');
+                    }
+                }else{
+                    require('view/allPosts.php');
+                }
             }
         }catch(Exception $e){
-            $url = $this->ifAdmin('error');
-            $user = $this->getUser();
-            require($url);
+            if(isset($_SESSION['user'])){
+                $user = $_SESSION['user'];
+                if($user->getIsAdmin() === 1){
+                    require('view/admin/error.php');
+                }else{
+                    require('view/user/error.php');
+                }
+            }else{
+                require('view/error.php');
+            }
         }
     }
 }

@@ -4,9 +4,10 @@ class User
     protected   $pseudo,
                 $password,
                 $email,
-                $admin;
+                $creationDate,
+                $isAdmin;
     
-    public function __construct() {
+    public function __construct(array $data) {
         $this->hydrate($data);
     }
     public function hydrate(array $data){
@@ -26,8 +27,11 @@ class User
     public function getEmail(){
         return $this->email;
     }
-    public function getAdmin(){
-        return $this->admin;
+    public function getCreationDate(){
+        return $this->creationDate;
+    }
+    public function getIsAdmin(){
+        return $this->isAdmin;
     }
     public function setPseudo($pseudo){
         if(is_string($pseudo)){
@@ -42,10 +46,15 @@ class User
             $this->email = $email;
         }
     }
-    public function setAdmin($admin){
-        $int = (int)$admin;
-        if(is_int($int)){
-            $this->admin = $int;
-        }
+    public function setCreationDate($creationDate){
+        $formatter = new    IntlDateFormatter('fr_FR',IntlDateFormatter::FULL,
+                            IntlDateFormatter::SHORT,
+                            'Europe/Paris',
+                            IntlDateFormatter::GREGORIAN);
+        $formattedDate = new DateTime($creationDate);
+        $this->creationDate = $formatter->format($formattedDate);
+    }
+    public function setIsAdmin($isAdmin){
+        $this->isAdmin = (int)$isAdmin;
     }
 }

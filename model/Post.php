@@ -1,12 +1,15 @@
 <?php
 class Post
 {
-    protected   $title,
+    protected   $id,
+                $title,
                 $content,
                 $excerpt,
-                $updated;
+                $creationDate,
+                $updated,
+                $updatedDate;
     
-    public function __construct() {
+    public function __construct(array $data) {
         $this->hydrate($data);
     }
     public function hydrate(array $data){
@@ -17,6 +20,9 @@ class Post
           }
         }
     }
+    public function getId(){
+        return $this->id;
+    }
     public function getTitle(){
         return $this->title;
     }
@@ -26,8 +32,17 @@ class Post
     public function getExcerpt(){
         return $this->excerpt;
     }
+    public function getCreationDate(){
+        return $this->creationDate;
+    }
     public function getUpdated(){
         return $this->updated;
+    }
+    public function getUpdatedDate(){
+        return $this->updatedDate;
+    }
+    public function setId($id){
+        $this->id = (int) $id;
     }
     public function setTitle($title){
         if(is_string($title)){
@@ -39,18 +54,32 @@ class Post
             $this->content = $content;
         }
     }
-    public function setExcerpt(){
-        if(strlen($this->content)>255){
-            $content = substr($this->content,0,255);
+    public function setExcerpt($content){
+        if(strlen($content)>255){
+            $content = substr($content,0,255);
             $space = strrpos($content," ");
             $this->excerpt = substr($content,0,$space);
         }else{
-            $this->excerpt = $this->content;
+            $this->excerpt = $content;
         }
     }
+    public function setCreationDate($creationDate){
+        $formatter = new    IntlDateFormatter('fr_FR',IntlDateFormatter::FULL,
+                            IntlDateFormatter::SHORT,
+                            'Europe/Paris',
+                            IntlDateFormatter::GREGORIAN);
+        $formattedDate = new DateTime($creationDate);
+        $this->creationDate = $formatter->format($formattedDate);
+    }
     public function setUpdated($updated){
-        if(is_bool($updated)){
-            $this->updated = $updated;
-        }
+        $this->updated = (bool) $updated;
+    }
+    public function setUpdatedDate($updatedDate){
+        $formatter = new    IntlDateFormatter('fr_FR',IntlDateFormatter::FULL,
+                            IntlDateFormatter::SHORT,
+                            'Europe/Paris',
+                            IntlDateFormatter::GREGORIAN);
+        $formattedDate = new DateTime($updatedDate);
+        $this->updatedDate = $formatter->format($formattedDate);
     }
 }
