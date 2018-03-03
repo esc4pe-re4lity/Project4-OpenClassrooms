@@ -17,6 +17,7 @@ class Controler
     public static function getAllPosts(Paging $paging){
         require_once('model/PostManager.php');
         $postManager = new PostManager();
+        var_dump($postManager);
         $posts = $postManager->getAllPosts($paging);
         return $posts;
     }
